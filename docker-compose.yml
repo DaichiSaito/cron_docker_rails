@@ -10,6 +10,20 @@ services:
       - 3000:3000
     stdin_open: true
     tty: true
-
+  cron:
+    build: .
+    command:
+      - bash
+      - -c
+      - |
+        bundle exec whenever --update-crontab
+        cron -f
+    volumes:
+      - .:/myapp:cached
+      - bundle:/usr/local/bundle
+    stdin_open: true
+    tty: true
+    depends_on:
+      - web
 volumes:
   bundle:
